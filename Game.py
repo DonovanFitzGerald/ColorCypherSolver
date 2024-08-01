@@ -1,4 +1,5 @@
 from Turn import *
+from SolveAlgo import *
 
 def CheckValid(guess,colors,cypherLength):
     if len(guess) != cypherLength:
@@ -9,22 +10,22 @@ def CheckValid(guess,colors,cypherLength):
     return True
 
 
-def Game(guesses,cypher,colorDict):
-    currentGuess = 0
-    while currentGuess < guesses:
-        print("Guess", currentGuess + 1, "of", guesses)
-        print("Enter your guess: ")
-        guess = list(input().upper())
-        currentGuess += 1
-        
-        Turn(cypher, guess, colorDict)
+def Game(cypher,colorDict,colors, cypherLength):
+    turnCount = 1
+    while True:
+        print("turn: ",turnCount)
+        print("Enter guess: ")
+        # guess = list(input().upper())
+        guess = AlgoOne(colors, cypherLength)
+
+        Turn(cypher, guess, colorDict) 
         
         if cypher == guess:
-            print("YOU WIN!")
-            print ("Total tries:", currentGuess, "guesses")
-            print("===========================================================")
             break
-        print("===========================================================")
-        print("GAME OVER")
-        break
-    return currentGuess
+        turnCount += 1
+        
+    print("===========================================================")
+    print("YOU WIN!")
+    print ("Total tries:", turnCount, "guesses")
+    print("===========================================================")
+    return turnCount

@@ -31,7 +31,13 @@ def Turn(cypher, guess, colorDict):
                 somewhereSpotsTotal += somewhereSpots[i]
             continue
 
-    print("===========================================================")
-    print("Your Guess: ", guess)
-    print("Correct: ", correctSpotsTotal, "  In Cypher: ", somewhereSpotsTotal)
-    print("===========================================================")
+    guessString = ""
+    for i in range(len(guess)):
+        guessString += guess[i]
+        guessString += " "
+
+    print("--------------------------------------------------------------------------")
+    print("Your Guess: ", guessString)
+    print("Correct: ", correctSpotsTotal)
+    print("In Cypher: ", somewhereSpotsTotal)
+    print("--------------------------------------------------------------------------")

@@ -15,14 +15,14 @@ for i in range(len(colors)):
     colorDict[colors[i]] = 0
 
 turns = 0
-totalRuns = runs
-while runs > 0:
-    runs -= 1
+i = runs
+while i > 0:
+    i -= 1
     cypher = CreateCypher(cypherLength,colors)
     print(cypher)
-    turns += Game(guesses, cypher, colorDict)
+    turns += Game(cypher, colorDict, colors, cypherLength)
     
 print("Total Turns = ", turns)
-print("Total Runs = ", totalRuns)
-turnsAverage = turns / totalRuns
+print("Total Runs = ", runs)
+turnsAverage = turns / runs
 print("Average = ", turnsAverage)
