@@ -1,4 +1,4 @@
-def Turn(cypher, guess, guesses, colorDict):
+def Turn(cypher, guess, colorDict):
     guessTotals = colorDict.copy()
     for i in range(len(guess)):
         guessTotals[guess[i]] += 1 

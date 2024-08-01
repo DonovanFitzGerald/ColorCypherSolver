@@ -4,7 +4,7 @@ from CypherCreator import *
 from Game import *
 from Turn import *
 
-totalRuns = 1
+runs = 2
 
 cypherLength = 4
 guesses = 10
@@ -15,11 +15,14 @@ for i in range(len(colors)):
     colorDict[colors[i]] = 0
 
 turns = 0
-while totalRuns > 0:
-    totalRuns -= 1
+totalRuns = runs
+while runs > 0:
+    runs -= 1
     cypher = CreateCypher(cypherLength,colors)
     print(cypher)
-    Game(cypher, colors, colorDict)
+    turns += Game(guesses, cypher, colorDict)
     
+print("Total Turns = ", turns)
+print("Total Runs = ", totalRuns)
 turnsAverage = turns / totalRuns
-print("test = ", turnsAverage)
+print("Average = ", turnsAverage)
