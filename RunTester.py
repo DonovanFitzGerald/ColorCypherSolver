@@ -6,7 +6,7 @@ from Turn import *
 from SolveAlgo import *
 import time
 
-runs = 1000
+runs = 10000
 
 cypherLength = 4
 guesses = 10
@@ -24,7 +24,7 @@ while i > 0:
     i -= 1
     cypher = CreateCypher(cypherLength,colors)
     # print(cypher)
-    turns = AlgoTwo(cypher, colorDict, colors, cypherLength)
+    turns = AlgoThree(cypher, colorDict, colors, cypherLength)
     totalTurns += turns
     print("Game: ", runs - i, "   Turns = ", turns)
     

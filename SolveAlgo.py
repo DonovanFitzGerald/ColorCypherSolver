@@ -53,6 +53,42 @@ def AlgoTwo(cypher,colorDict,colors,cypherLength):
         
     return turnCount
 
+def AlgoThree(cypher,colorDict,colors,cypherLength):
+    turnCount = 1
+    validColors = {}
+    checkedColors = []
+    guessHistory = []
+    while turnCount < 1000:
+        
+        guess = []
+
+        if len(colors) != len(checkedColors):
+            while len(guess) < cypherLength:
+                guess.append(colors[len(checkedColors)])
+        else:
+            for key, value in validColors.items():
+                guess.extend([key] * value)
+                
+        while guess in guessHistory:
+            random.shuffle(guess)
+                
+                
+        guessHistory.append(guess)
+                
+        if cypher == guess:
+            break
+        turnCount += 1
+        result = Turn(cypher, guess, colorDict) 
+        
+        
+        if len(colors) != len(checkedColors):
+            checkedColors.append(colors[len(checkedColors)])
+            if result[0] > 0:
+                validColors[colors[len(checkedColors) - 1]] = result[0]
+
+        
+    return turnCount
 
 
-AlgoTwo(testCypher,testColorDict,testColors,testCypherLength)
+
+AlgoThree(testCypher,testColorDict,testColors,testCypherLength)

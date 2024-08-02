@@ -13,10 +13,9 @@ def CheckValid(guess,colors,cypherLength):
 def Game(cypher,colorDict,colors, cypherLength):
     turnCount = 1
     while True:
-        # print("turn: ",turnCount)
-        # print("Enter guess: ")
-        # guess = list(input().upper())
-        guess = AlgoOne(colors, cypherLength)
+        print("turn: ",turnCount)
+        print("Enter guess: ")
+        guess = list(input().upper())
 
         Turn(cypher, guess, colorDict) 
         
@@ -24,8 +23,8 @@ def Game(cypher,colorDict,colors, cypherLength):
             break
         turnCount += 1
         
-    # print("===========================================================")
-    # print("YOU WIN!")
-    # print ("Total tries:", turnCount, "guesses")
-    # print("===========================================================")
+    print("===========================================================")
+    print("YOU WIN!")
+    print ("Total tries:", turnCount, "guesses")
+    print("===========================================================")
     return turnCount
