@@ -1,3 +1,8 @@
+import time
+
+testColorsDict = {"R": 0, "G": 0, "B": 0, "Y": 0, "P": 0, "W": 0}
+testCypher = ["R", "G", "Y", "W"]
+testGuess = ["R", "R", "W", "R"]
 def Turn(cypher, guess, colorDict):
     guessTotals = colorDict.copy()
     for i in range(len(guess)):
@@ -42,5 +47,18 @@ def Turn(cypher, guess, colorDict):
     # print("In Cypher: ", somewhereSpotsTotal)
     # print("--------------------------------------------------------------------------")
     
-    result = [correctSpotsTotal, somewhereSpotsTotal]
-    return result
+    return [correctSpotsTotal, somewhereSpotsTotal]
+
+
+# def Test():
+#     totalRuns = 100000
+#     runs = totalRuns
+#     start_time = time.time()
+#     while runs > 0:
+#         runs -= 1
+#         result = Turn(testCypher, testGuess, testColorsDict)
+#         print(result)
+#         runtime = time.time() - start_time
+#     print("runtime: ", runtime / totalRuns,"s")
+
+# Test()

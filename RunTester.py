@@ -6,11 +6,14 @@ from Turn import *
 from SolveAlgo import *
 import time
 
-runs = 10000
+runs = 1000000
+printEvery = 1
 
 cypherLength = 4
-guesses = 10
+guesses = 1
 colors = ["R", "G", "B", "Y", "P", "W"]
+
+turnDict = {}
 
 colorDict = {}
 for i in range(len(colors)):
@@ -20,13 +23,24 @@ start_time = time.time()
 
 totalTurns = 0
 i = runs
+printEveryCurrent = 0
 while i > 0:
     i -= 1
     cypher = CreateCypher(cypherLength,colors)
     # print(cypher)
-    turns = AlgoThree(cypher, colorDict, colors, cypherLength)
+    turns = Algo3(cypher, colorDict, colors, cypherLength)
+    
+    if turns in turnDict:
+        turnDict[turns] += 1
+    else:
+        turnDict[turns] = 1
+    
+    if  printEveryCurrent == 0:
+        print("Game: ", runs - i, "   Turns = ", turns)
+        printEveryCurrent = printEvery
+    printEveryCurrent -= 1
+        
     totalTurns += turns
-    print("Game: ", runs - i, "   Turns = ", turns)
     
 # print("Total Turns = ", totalTurns)
 # print("Total Runs = ", runs)
@@ -38,3 +52,11 @@ runtime = time.time() - start_time
 print("runtime: ", round(runtime, 3),"s")
 print("per run: ", round((runtime / runs) * 1000, 3) ," ms")
 print("-------------------------------------")
+
+
+turnDict = dict(sorted(turnDict.items()))
+for i in turnDict:
+    print(i)
+print("-------------------------------------")
+for i in turnDict:
+    print(turnDict[i])
