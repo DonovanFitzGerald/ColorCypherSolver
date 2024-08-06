@@ -6,8 +6,8 @@ from Turn import *
 from SolveAlgo import *
 import time
 
-runs = 1000000
-printEvery = 1
+runs = 100000
+printEvery = 10000
 
 cypherLength = 4
 guesses = 1
@@ -28,7 +28,7 @@ while i > 0:
     i -= 1
     cypher = CreateCypher(cypherLength,colors)
     # print(cypher)
-    turns = Algo3(cypher, colorDict, colors, cypherLength)
+    turns = Algo45(cypher, colorDict, colors, cypherLength)
     
     if turns in turnDict:
         turnDict[turns] += 1
@@ -54,9 +54,9 @@ print("per run: ", round((runtime / runs) * 1000, 3) ," ms")
 print("-------------------------------------")
 
 
-turnDict = dict(sorted(turnDict.items()))
-for i in turnDict:
-    print(i)
-print("-------------------------------------")
-for i in turnDict:
-    print(turnDict[i])
+# turnDict = dict(sorted(turnDict.items()))
+# for i in turnDict:
+#     print(i)
+# print("-------------------------------------")
+# for i in turnDict:
+#     print(turnDict[i])
