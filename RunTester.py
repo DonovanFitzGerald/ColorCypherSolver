@@ -1,13 +1,12 @@
-import random
-import numpy
-from CypherCreator import *
-from Game import *
-from Turn import *
-from SolveAlgo import *
-import time
+from CypherCreator import CreateCypher
+# from Game import Game
 
-runs = 100000
-printEvery = 10000
+# from SolveAlgo import *
+import time
+from EntropyAlgo import EntropyAlgo
+
+runs = 1000
+printEvery = 100
 
 cypherLength = 4
 guesses = 1
@@ -26,22 +25,22 @@ i = runs
 printEveryCurrent = 0
 while i > 0:
     i -= 1
-    cypher = CreateCypher(cypherLength,colors)
+    cypher = CreateCypher(cypherLength, colors)
     # print(cypher)
-    turns = Algo45(cypher, colorDict, colors, cypherLength)
-    
+    turns = EntropyAlgo(cypher, colorDict, colors, cypherLength)
+
     if turns in turnDict:
         turnDict[turns] += 1
     else:
         turnDict[turns] = 1
-    
-    if  printEveryCurrent == 0:
+
+    if printEveryCurrent == 0:
         print("Game: ", runs - i, "   Turns = ", turns)
         printEveryCurrent = printEvery
     printEveryCurrent -= 1
-        
+
     totalTurns += turns
-    
+
 # print("Total Turns = ", totalTurns)
 # print("Total Runs = ", runs)
 turnsAverage = totalTurns / runs
@@ -49,8 +48,8 @@ print("-------------------------------------")
 print("Average: ", turnsAverage, "turns")
 print("-------------------------------------")
 runtime = time.time() - start_time
-print("runtime: ", round(runtime, 3),"s")
-print("per run: ", round((runtime / runs) * 1000, 3) ," ms")
+print("runtime: ", round(runtime, 3), "s")
+print("per run: ", round((runtime / runs) * 1000, 3), " ms")
 print("-------------------------------------")
 
 

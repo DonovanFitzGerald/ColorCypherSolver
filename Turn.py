@@ -3,14 +3,16 @@ import time
 testColorsDict = {"R": 0, "G": 0, "B": 0, "Y": 0, "P": 0, "W": 0}
 testCypher = ["R", "G", "Y", "W"]
 testGuess = ["R", "R", "W", "R"]
+
+
 def Turn(cypher, guess, colorDict):
     if len(guess) != len(cypher):
         print("Invalid guess")
         return
     guessTotals = colorDict.copy()
     for i in range(len(guess)):
-        guessTotals[guess[i]] += 1 
-        
+        guessTotals[guess[i]] += 1
+
     cypherDict = colorDict.copy()
     for i in range(len(cypher)):
         cypherDict[cypher[i]] += 1
@@ -49,7 +51,7 @@ def Turn(cypher, guess, colorDict):
     # print("Correct: ", correctSpotsTotal)
     # print("In Cypher: ", somewhereSpotsTotal)
     # print("--------------------------------------------------------------------------")
-    
+
     return [correctSpotsTotal, somewhereSpotsTotal]
 
 
