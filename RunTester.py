@@ -5,18 +5,14 @@ from CypherCreator import CreateCypher
 import time
 from EntropyAlgo import EntropyAlgo
 
-runs = 1000
-printEvery = 100
+runs = 10
+printEvery = 1
 
 cypherLength = 4
 guesses = 1
 colors = ["R", "G", "B", "Y", "P", "W"]
 
 turnDict = {}
-
-colorDict = {}
-for i in range(len(colors)):
-    colorDict[colors[i]] = 0
 
 start_time = time.time()
 
@@ -27,7 +23,7 @@ while i > 0:
     i -= 1
     cypher = CreateCypher(cypherLength, colors)
     # print(cypher)
-    turns = EntropyAlgo(cypher, colorDict, colors, cypherLength)
+    turns = EntropyAlgo(cypher, colors, cypherLength)
 
     if turns in turnDict:
         turnDict[turns] += 1

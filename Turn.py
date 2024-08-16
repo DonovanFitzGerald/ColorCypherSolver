@@ -5,7 +5,11 @@ testCypher = ["R", "G", "Y", "W"]
 testGuess = ["R", "R", "W", "R"]
 
 
-def Turn(cypher, guess, colorDict):
+def Turn(cypher, guess, colors):
+    colorDict = {}
+    for i in range(len(colors)):
+        colorDict[colors[i]] = 0
+
     if len(guess) != len(cypher):
         print("Invalid guess")
         return
