@@ -5,11 +5,10 @@ from CypherCreator import CreateCypher
 import time
 from PossibilityReductionAlgo import PossibilityReductionAlgo
 
-runs = 10000
-printEvery = 100
+runs = 100000
+printEvery = 1000
 
-cypherLength = 4
-guesses = 1
+cypherLength = 2
 colors = ["R", "G", "B", "Y", "P", "W"]
 
 turnDict = {}
@@ -37,8 +36,6 @@ while i > 0:
 
     totalTurns += turns
 
-# print("Total Turns = ", totalTurns)
-# print("Total Runs = ", runs)
 turnsAverage = totalTurns / runs
 print("-------------------------------------")
 print("Average: ", turnsAverage, "turns")

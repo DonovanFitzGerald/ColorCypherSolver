@@ -1,6 +1,5 @@
 import random
 from Turn import Turn
-from collections import Counter
 from itertools import product
 
 
@@ -18,7 +17,7 @@ def getAllPossibilities(colors, cypherLength):
 def getInitalGuesses(colors, cypherLength):
     guess = []
     for i in range(cypherLength):
-        guess.append(colors[i])
+        guess.append(colors[i % len(colors)])
     return guess
 
 
@@ -51,7 +50,7 @@ def removeGuessPossibilities(
 def PossibilityReductionAlgo(cypher, colors, cypherLength):
     remainingPossibilities = getAllPossibilities(colors, cypherLength)
     guessHistory = []
-    turnCount = 1
+    turnCount = 0
 
     while turnCount < 10000:
         if turnCount == 1:
@@ -77,7 +76,6 @@ def PossibilityReductionAlgo(cypher, colors, cypherLength):
 
 def createTest():
     testColors = ["R", "G", "B", "Y", "P", "W"]
-    testCypher = ["R", "G", "Y", "W"]
     testCypherLength = 4
     testCypher = []
     while len(testCypher) < testCypherLength:
