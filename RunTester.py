@@ -3,9 +3,9 @@ from CypherCreator import CreateCypher
 
 # from SolveAlgo import *
 import time
-from EntropyAlgo import EntropyAlgo
+from PossibilityReductionAlgo import PossibilityReductionAlgo
 
-runs = 100000
+runs = 10000
 printEvery = 100
 
 cypherLength = 4
@@ -23,7 +23,7 @@ while i > 0:
     i -= 1
     cypher = CreateCypher(cypherLength, colors)
     # print(cypher)
-    turns = EntropyAlgo(cypher, colors, cypherLength)
+    turns = PossibilityReductionAlgo(cypher, colors, cypherLength)
 
     if turns in turnDict:
         turnDict[turns] += 1
