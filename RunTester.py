@@ -8,7 +8,7 @@ from PossibilityReductionAlgo import PossibilityReductionAlgo
 runs = 100000
 printEvery = 1000
 
-cypherLength = 2
+cypherLength = 4
 colors = ["R", "G", "B", "Y", "P", "W"]
 
 turnDict = {}

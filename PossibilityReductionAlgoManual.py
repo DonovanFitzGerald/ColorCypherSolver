@@ -18,7 +18,7 @@ def getAllPossibilities(colors, cypherLength):
 def getInitalGuesses(colors, cypherLength):
     guess = []
     for i in range(cypherLength):
-        guess.append(colors[i])
+        guess.append(colors[i % (int(len(colors) / 2))])
     return guess
 
 
@@ -29,7 +29,9 @@ def removeGuessPossibilities(
 ):
     guess = guessHistory[len(guessHistory) - 1][0]
 
-    possibilities = [p for p in remainingPossibilities if p != guess]
+    possibilities = [
+        possibility for possibility in remainingPossibilities if possibility != guess
+    ]
 
     validPossibilities = []
     for possibility in possibilities:
@@ -46,29 +48,65 @@ def removeGuessPossibilities(
     return possibilities
 
 
+def calculateCheckedColors(notCheckedColors, remainingPossibilities, colors, guess):
+    for color in guess:
+        if color in notCheckedColors:
+            notCheckedColors.remove(color)
+        possibleColors = []
+        for possibility in remainingPossibilities:
+            if color in possibility:
+                possibleColors.append(possibility)
+        allColors = [color for color in colors]
+        for possibility in possibleColors:
+            if possibility in allColors:
+                possibleColors.remove(possibility)
+        for possibility in possibleColors:
+            if possibility in notCheckedColors:
+                notCheckedColors.remove(possibility)
+    return notCheckedColors
+
+
+def createGuess(remainingPossibilities, notCheckedColors):
+    options = []
+    for possibility in remainingPossibilities:
+        if set(notCheckedColors).issubset(set(possibility)):
+            options.append(possibility)
+    if len(options) == 0:
+        for possibility in remainingPossibilities:
+            for color in notCheckedColors:
+                if color in possibility:
+                    if possibility not in options:
+                        options.append(possibility)
+    if len(options) == 0:
+        guess = random.choice(remainingPossibilities)
+    else:
+        guess = random.choice(options)
+    return guess
+
+
 def PossibilityReductionManual(colors, cypherLength):
     remainingPossibilities = getAllPossibilities(colors, cypherLength)
     guessHistory = []
-    turnCount = 1
+    turnCount = 0
+    notCheckedColors = [color for color in colors]
 
     while turnCount < 10:
-        guess = []
-
-        if turnCount == 1:
+        if turnCount == 0:
             guess = getInitalGuesses(colors, cypherLength)
         else:
-            guess = []
-            guess = random.choice(remainingPossibilities)
+            guess = createGuess(remainingPossibilities, notCheckedColors)
 
         print("Guess: ", guess)
 
-        checkSolved = input("Is it solved? (y/n): ")
-        if checkSolved == "yes" or checkSolved == "y":
-            print("Solved!")
-            break
+        # checkSolved = input("Is it solved? (y/n): ")
+        # if checkSolved == "yes" or checkSolved == "y":
+        #     print("Solved!")
+        #     break
 
         correctPositionCount = int(input("Enter correct position count: "))
         correctColorCount = int(input("Enter correct color count: "))
+
+        turnCount += 1
 
         feedback = [correctPositionCount, correctColorCount]
 
@@ -76,9 +114,12 @@ def PossibilityReductionManual(colors, cypherLength):
 
         remainingPossibilities = removeGuessPossibilities(
             remainingPossibilities,
-            cypherLength,
             colors,
             guessHistory,
+        )
+
+        notCheckedColors = calculateCheckedColors(
+            notCheckedColors, remainingPossibilities, colors, guess
         )
 
     return turnCount
