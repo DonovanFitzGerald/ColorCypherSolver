@@ -5,8 +5,8 @@ from CypherCreator import CreateCypher
 import time
 from EntropyAlgo import EntropyAlgo
 
-runs = 10
-printEvery = 1
+runs = 100000
+printEvery = 100
 
 cypherLength = 4
 guesses = 1
@@ -49,9 +49,9 @@ print("per run: ", round((runtime / runs) * 1000, 3), " ms")
 print("-------------------------------------")
 
 
-# turnDict = dict(sorted(turnDict.items()))
-# for i in turnDict:
-#     print(i)
-# print("-------------------------------------")
-# for i in turnDict:
-#     print(turnDict[i])
+turnDict = dict(sorted(turnDict.items()))
+for i in turnDict:
+    print(i)
+print("-------------------------------------")
+for i in turnDict:
+    print(turnDict[i])

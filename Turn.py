@@ -6,44 +6,26 @@ testGuess = ["R", "R", "W", "R"]
 
 
 def Turn(cypher, guess, colors):
-    colorDict = {}
-    for i in range(len(colors)):
-        colorDict[colors[i]] = 0
-
     if len(guess) != len(cypher):
         print("Invalid guess")
         return
+
+    colorDict = {color: 0 for color in colors}
+
     guessTotals = colorDict.copy()
+    cypherDict = colorDict.copy()
+    correctSpotsTotal, somewhereSpotsTotal = 0, 0
+
     for i in range(len(guess)):
         guessTotals[guess[i]] += 1
-
-    cypherDict = colorDict.copy()
-    for i in range(len(cypher)):
         cypherDict[cypher[i]] += 1
-
-    correctSpots = colorDict.copy()
-    somewhereSpots = colorDict.copy()
-    for i in range(len(guess)):
         if guess[i] == cypher[i]:
-            correctSpots[guess[i]] += 1
-        elif guess[i] in cypher:
-            somewhereSpots[guess[i]] += 1
+            correctSpotsTotal += 1
 
-    correctSpotsTotal = 0
-    somewhereSpotsTotal = 0
-    for i in somewhereSpots:
-        if cypherDict[i] == 0:
-            continue
-        elif cypherDict[i] == correctSpots[i]:
-            correctSpotsTotal += correctSpots[i]
-            continue
-        elif cypherDict[i] >= correctSpots[i]:
-            correctSpotsTotal += correctSpots[i]
-            if cypherDict[i] <= somewhereSpots[i]:
-                somewhereSpotsTotal += cypherDict[i] - correctSpots[i]
-            else:
-                somewhereSpotsTotal += somewhereSpots[i]
-            continue
+    for color in colors:
+        if cypherDict[color] > 0:
+            somewhereSpotsTotal += min(guessTotals[color], cypherDict[color])
+    somewhereSpotsTotal -= correctSpotsTotal
 
     guessString = ""
     for i in range(len(guess)):

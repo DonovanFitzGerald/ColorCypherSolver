@@ -46,94 +46,80 @@ def getAllPossibilities(colors, cypherLength):
 def getInitalGuesses(colors, cypherLength):
     guess = []
     for i in range(cypherLength):
-        guess.append(colors[0])
+        guess.append(colors[i])
     return guess
-
-
-def precomputeFeedbackTable(allPosibilities, colors):
-    feedbackTable = {}
-    for i in range(len(allPosibilities)):
-        for j in range(i + 1, len(allPosibilities)):
-            print(allPosibilities[i], allPosibilities[j])
-            feedback = Turn(allPosibilities[j], allPosibilities[i], colors)
-            feedback = (feedback[0], feedback[1])
-            feedbackTable[allPosibilities[i]] = [allPosibilities[j]]
-            feedbackTable[allPosibilities[j]][allPosibilities[i]] = feedback
-    return feedbackTable
 
 
 def removeGuessPossibilities(
-    remainingPossibilities, guess, feedback, cypherLength, colors
+    remainingPossibilities,
+    guess,
+    feedback,
+    cypherLength,
+    colors,
+    guessHistory,
+    correctColorPositionsArray,
+    wrongColorPositionsArray,
 ):
-    if guess in remainingPossibilities:
-        remainingPossibilities.remove(guess)
+    possibilities = [p for p in remainingPossibilities if p != guess]
+
+    guessSet = set(guess)
 
     if feedback[0] + feedback[1] == 0:
-        remainingPossibilities = [
-            possibility
-            for possibility in remainingPossibilities
-            if not any(color in guess for color in possibility)
+        possibilities = [p for p in possibilities if not guessSet.intersection(p)]
+
+    elif feedback[0] + feedback[1] == cypherLength:
+        guessDict = dict(sorted(Counter(guess).items()))
+        possibilities = [
+            p for p in possibilities if dict(sorted(Counter(p).items())) == guessDict
         ]
 
-    if feedback[0] + feedback[1] == cypherLength:
-        for i in range(len(guess)):
-            guessDict = Counter(guess)
-            guessDict = dict(sorted(guessDict.items()))
-            for possibility in remainingPossibilities:
-                possibilityDict = Counter(possibility)
-                possibilityDict = dict(sorted(possibilityDict.items()))
-                if possibilityDict != guessDict:
-                    remainingPossibilities.remove(possibility)
+    # Remove possibilities based on historical feedback
+    validPossibilities = []
+    for possibility in possibilities:
+        valid = True
+        for pastGuess, pastFeedback in guessHistory:
+            if Turn(pastGuess, possibility, colors) != pastFeedback:
+                valid = False
+                break
+        if valid:
+            validPossibilities.append(possibility)
 
-    for possibility in remainingPossibilities:
-        posibilityFeedback = Turn(guess, possibility, colors)
-        if posibilityFeedback != feedback:
-            remainingPossibilities.remove(possibility)
+    possibilities = validPossibilities
 
-    return remainingPossibilities
-
-
-def generateGuess(allPossibilities, remainingPossibilities, cypherLength, colors):
-    turnGuessInformationDict = {}
-    for i in range(len(allPossibilities)):
-        testPossibilities = remainingPossibilities.copy()
-        averagePossibilities = 0
-
-        for j in range(len(remainingPossibilities)):
-            feedback = Turn(allPossibilities[i], remainingPossibilities[j], colors)
-            newPossibilities = removeGuessPossibilities(
-                testPossibilities, allPossibilities[i], feedback, cypherLength, colors
-            )
-            averagePossibilities += len(newPossibilities)
-
-        turnGuessInformationDict[i] = averagePossibilities
-    mostInformationIndex = min(
-        turnGuessInformationDict, key=turnGuessInformationDict.get
-    )
-    guess = allPossibilities[mostInformationIndex]
-    return guess
+    return possibilities
 
 
 def EntropyAlgo(cypher, colors, cypherLength):
     allPossibilities = getAllPossibilities(colors, cypherLength)
-    remainingPossibilities = getAllPossibilities(colors, cypherLength)
+    remainingPossibilities = allPossibilities.copy()
     # positionPossibilitiesDict = getPositionProbabiltyDict(
     #     allPossibilities, cypherLength, colors
     # )
+    guessHistory = []
+
+    correctColorPositionsArray = []
+    wrongColorPositionsArray = []
+    for i in range(cypherLength):
+        correctColorPositionsArray.append([])
+    for i in range(cypherLength):
+        wrongColorPositionsArray.append([])
+
     turnCount = 0
     while turnCount < 10000:
         guess = []
 
-        if turnCount <= 1:
+        if turnCount == 1:
             guess = getInitalGuesses(colors, cypherLength)
-
-        elif len(remainingPossibilities) == 1:
-            guess = remainingPossibilities[0]
-
         else:
-            guess = generateGuess(
-                allPossibilities, remainingPossibilities, cypherLength, colors
-            )
+            if len(remainingPossibilities) == 1:
+                guess = remainingPossibilities[0]
+            else:
+                guess = []
+                guess = random.choice(remainingPossibilities)
+
+        if guess not in remainingPossibilities:
+            guess = []
+            guess = random.choice(remainingPossibilities)
 
         # print(cypher, guess)
 
@@ -142,15 +128,24 @@ def EntropyAlgo(cypher, colors, cypherLength):
         if cypher == guess:
             break
 
+        guessHistory.append([guess, feedback])
+
         remainingPossibilities = removeGuessPossibilities(
-            remainingPossibilities, guess, feedback, cypherLength, colors
+            remainingPossibilities,
+            guess,
+            feedback,
+            cypherLength,
+            colors,
+            guessHistory,
+            correctColorPositionsArray,
+            wrongColorPositionsArray,
         )
 
     return turnCount
 
 
-# EntropyAlgo(
-#     CreateCypher(testCypherLength, testColors),
-#     testColors,
-#     testCypherLength,
-# )
+EntropyAlgo(
+    CreateCypher(testCypherLength, testColors),
+    testColors,
+    testCypherLength,
+)
