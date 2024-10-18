@@ -96,12 +96,41 @@ def PossibilityReductionManual(colors, cypherLength):
         else:
             guess = createGuess(remainingPossibilities, notCheckedColors)
 
-        print("Guess: ", guess)
+        if len(remainingPossibilities) == 1:
+            print(
+                "Only possibility:",
+                guess[0],
+                " ",
+                guess[1],
+                " ",
+                guess[2],
+                " ",
+                guess[3],
+            )
+        else:
+            print("Possibilities Remaining: ", len(remainingPossibilities))
+            print(
+                "Suggested guess: ",
+                guess[0],
+                " ",
+                guess[1],
+                " ",
+                guess[2],
+                " ",
+                guess[3],
+            )
 
         # checkSolved = input("Is it solved? (y/n): ")
         # if checkSolved == "yes" or checkSolved == "y":
         #     print("Solved!")
         #     break
+
+        usingGuess = input("Use suggested guess? (y/n): ")
+        if not usingGuess == "y" and not usingGuess == "yes":
+            guess = []
+            customGuess = input("Enter guess: ")
+            for i in range(len(customGuess)):
+                guess.append(customGuess[i].capitalize())
 
         correctPositionCount = int(input("Enter correct position count: "))
         correctColorCount = int(input("Enter correct color count: "))

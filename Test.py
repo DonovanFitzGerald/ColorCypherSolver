@@ -4,21 +4,6 @@ from collections import Counter
 guess = ["R", "R", "W", "R"]
 print(Counter(guess))
 
-
-def getInitalGuesses(colors, cypherLength, turnCount):
-    guess = []
-    for i in range(cypherLength):
-        guess.append(
-            colors[(i + (turnCount * (len(colors) - cypherLength))) % len(colors)]
-        )
-    return guess
-
-        if turnCount <= len(colors) - cypherLength - 1:
-            guess = getInitalGuesses(colors, cypherLength, turnCount)
-            
-            
-            
-            
             
 def generateGuess(possibilities, colors, guessHistory):
     possibilitiesStartLength = len(possibilities)
